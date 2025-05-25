@@ -1,219 +1,259 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ASDF Gams - 100 Games</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ASDF Gams</title>
   <style>
-    /* General Styles */
+    :root {
+      --bg-color: #000;
+      --text-color: #0f0;
+      --highlight-color: #a020f0; /* Default purple */
+    }
     body {
+      margin: 0; padding: 0;
+      background-color: var(--bg-color);
+      color: var(--text-color);
       font-family: Arial, sans-serif;
-      background-color: black;
-      color: #00FF00;
-      margin: 0;
-      padding: 0;
-      transition: background-color 0.3s ease, color 0.3s ease;
     }
-
-    header {
-      background-color: #333;
-      padding: 10px;
+    #container {
+      display: flex;
+      height: 100vh;
     }
-
-    header .logo h1 {
-      color: #8A2BE2;
-      text-align: center;
+    nav {
+      width: 160px;
+      background: #111;
+      border-right: 2px solid var(--highlight-color);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 20px;
+      box-sizing: border-box;
     }
-
-    nav ul {
-      list-style: none;
-      text-align: center;
-      padding: 0;
-    }
-
-    nav ul li {
-      display: inline;
-      margin: 0 15px;
-    }
-
-    nav ul li a {
-      color: #fff;
+    nav a {
+      color: var(--text-color);
       text-decoration: none;
+      margin: 10px 0;
+      padding: 10px 20px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: bold;
+      width: 120px;
+      justify-content: center;
+      transition: background-color 0.3s ease;
     }
-
+    nav a.active, nav a:hover {
+      background-color: var(--highlight-color);
+      color: #000;
+    }
+    nav a svg {
+      fill: currentColor;
+      width: 18px;
+      height: 18px;
+    }
     main {
+      flex-grow: 1;
       padding: 20px;
+      overflow-y: auto;
     }
-
-    h2 {
-      color: #8A2BE2;
-      text-align: center;
+    h1 {
+      margin-top: 0;
     }
-
-    .games-container {
+    #game-buttons {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
-      grid-gap: 15px;
-      justify-content: center;
+      gap: 12px;
+      margin-bottom: 20px;
     }
-
-    iframe {
-      width: 100%;
-      height: 300px;
+    #game-buttons button {
+      background-color: #111;
+      border: 2px solid var(--highlight-color);
+      border-radius: 15px;
+      color: var(--text-color);
+      font-weight: bold;
+      padding: 12px;
+      cursor: pointer;
+      user-select: none;
+      transition: background-color 0.3s ease;
+    }
+    #game-buttons button:hover {
+      background-color: var(--highlight-color);
+      color: #000;
+      box-shadow: 0 0 10px var(--highlight-color);
+    }
+    #random-game-btn {
+      grid-column: span 5;
+      background-color: var(--highlight-color);
+      color: #000;
+      font-weight: bold;
+      font-size: 1.1em;
+      border-radius: 15px;
+      cursor: pointer;
+      box-shadow: 0 4px 14px var(--highlight-color);
+      user-select: none;
       border: none;
-      border-radius: 10px;
+      margin-bottom: 20px;
+      padding: 15px 0;
     }
-
-    footer {
-      text-align: center;
-      margin-top: 20px;
-      color: white;
-      padding: 10px;
+    #random-game-btn:hover {
+      background-color: #8b00d9;
+      box-shadow: 0 0 18px #8b00d9;
     }
-
-    /* Proxy Page Styles */
-    .proxy-section {
-      text-align: center;
-      margin: 20px;
-    }
-
-    iframe {
+    #game-container {
       width: 100%;
       height: 600px;
+      background: #111;
+      border: 2px solid var(--highlight-color);
+      border-radius: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #game-container iframe {
+      width: 100%;
+      height: 100%;
       border: none;
+      border-radius: 15px;
     }
-
-    /* Settings Page Styles */
-    select, input {
-      padding: 10px;
-      margin: 10px;
-      font-size: 16px;
+    #controls {
+      margin-top: 15px;
+      display: none;
+      gap: 15px;
+      align-items: center;
+    }
+    #controls button, #controls input[type=range] {
+      cursor: pointer;
+    }
+    #controls button {
+      background-color: var(--highlight-color);
+      border: none;
+      color: #000;
+      padding: 8px 15px;
       border-radius: 10px;
+      font-weight: bold;
+      user-select: none;
     }
-
-    #theme-select {
-      width: 200px;
+    #controls button:hover {
+      background-color: #8b00d9;
+      box-shadow: 0 0 10px #8b00d9;
     }
-
+    #volume-range {
+      width: 120px;
+    }
   </style>
 </head>
 <body>
-
-  <!-- Header -->
-  <header>
-    <div class="logo">
-      <h1>ASDF Gams - 100 Games</h1>
-    </div>
+  <div id="container">
     <nav>
-      <ul>
-        <li><a href="#home">Home</a></li>
-        <li><a href="#gams">Gams</a></li>
-        <li><a href="#settings">Settings</a></li>
-        <li><a href="#prx">Pr*xies</a></li>
-      </ul>
+      <a href="#" id="nav-home" class="active" title="Home">
+        <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>Home
+      </a>
+      <a href="#" id="nav-gams" title="Gams">
+        <svg viewBox="0 0 24 24"><path d="M13 2H6a2 2 0 00-2 2v16a2 2 0 002 2h8a2 2 0 002-2V8l-5-6z"/></svg>Gams
+      </a>
+      <a href="#" id="nav-about" title="About">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="none" fill="currentColor"/><path fill="#000" d="M11 10h2v6h-2zm1-4a1.25 1.25 0 100 2.5A1.25 1.25 0 0012 6z"/></svg>About
+      </a>
+      <a href="#" id="nav-settings" title="Settings">
+        <svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" d="M12 15.5a3.5 3.5 0 110-7 3.5 3.5 0 010 7z"/><path d="M19.43 12.98c.04-.31.07-.63.07-.98s-.03-.67-.07-.98l2.11-1.65a.5.5 0 00.12-.63l-2-3.46a.5.5 0 00-.6-.22l-2.49 1a7.01 7.01 0 00-1.63-.94l-.36-2.54a.5.5 0 00-.5-.42h-3.84a.5.5 0 00-.5.42l-.36 2.54a7.01 7.01 0 00-1.63.94l-2.49-1a.5.5 0 00-.6.22l-2 3.46a.5.5 0 00.12.63l2.11 1.65c-.05.31-.08.63-.08.98s.03.67.08.98l-2.11 1.65a.5.5 0 00-.12.63l2 3.46a.5.5 0 00.6.22l2.49-1c.49.37 1.04.7 1.63.94l.36 2.54a.5.5 0 00.5.42h3.84a.5.5 0 00.5-.42l.36-2.54c.59-.24 1.14-.57 1.63-.94l2.49 1a.5.5 0 00.6-.22l2-3.46a.5.5 0 00-.12-.63l-2.11-1.65zM12 14a2 2 0 110-4 2 2 0 010 4z"/></svg>Settings
+      </a>
     </nav>
-  </header>
-
-  <!-- Main Content -->
-  <main>
-    <!-- Home Section -->
-    <section id="home">
-      <h2>Welcome to ASDF Gams!</h2>
-      <p>Explore and play 100+ games embedded directly on this website!</p>
-    </section>
-
-    <!-- Gams Section -->
-    <section id="gams">
-      <h2>Play Some Games!</h2>
-      <div class="games-container">
-        <!-- Embedded Games -->
-        <iframe src="https://www.coolmathgames.com/0-balloon-pop" title="Balloon Pop"></iframe>
-        <iframe src="https://www.coolmathgames.com/0-bloxorz" title="Bloxorz"></iframe>
-        <iframe src="https://www.coolmathgames.com/0-copter" title="Copter"></iframe>
-        <iframe src="https://www.coolmathgames.com/0-2048" title="2048"></iframe>
-        <iframe src="https://www.coolmathgames.com/0-8-ball-pool" title="8 Ball Pool"></iframe>
-        <iframe src="https://www.coolmathgames.com/0-crossy-road" title="Crossy Road"></iframe>
-        <iframe src="https://www.coolmathgames.com/0-snake" title="Snake"></iframe>
-        <iframe src="https://www.coolmathgames.com/0-flappy-bird" title="Flappy Bird"></iframe>
-        <iframe src="https://www.coolmathgames.com/0-tetris" title="Tetris"></iframe>
-        <iframe src="https://www.coolmathgames.com/0-pacman" title="PacMan"></iframe>
-        <iframe src="https://www.coolmathgames.com/0-chess" title="Chess"></iframe>
-        <iframe src="https://www.coolmathgames.com/0-asteroids" title="Asteroids"></iframe>
-        <iframe src="https://www.coolmathgames.com/0-memory" title="Memory"></iframe>
-        <iframe src="https://www.coolmathgames.com/0-puzzle" title="Puzzle"></iframe>
-        <iframe src="https://www.coolmathgames.com/0-match-3" title="Match 3"></iframe>
-        <iframe src="https://www.coolmathgames.com/0-mahjong" title="Mahjong"></iframe>
-        <iframe src="https://www.coolmathgames.com/0-blocks" title="Blocks"></iframe>
-        <iframe src="https://www.coolmathgames.com/0-jigsaw" title="Jigsaw"></iframe>
-        <iframe src="https://www.coolmathgames.com/0-pool" title="Pool"></iframe>
-        <iframe src="https://www.coolmathgames.com/0-sudoku" title="Sudoku"></iframe>
-        <iframe src="https://www.coolmathgames.com/0-pong" title="Pong"></iframe>
-        <iframe src="https://www.coolmathgames.com/0-dots-and-boxes" title="Dots and Boxes"></iframe>
-        <iframe src="https://www.coolmathgames.com/0-mine-sweeper" title="Minesweeper"></iframe>
-        <iframe src="https://www.coolmathgames.com/0-jumpy" title="Jumpy"></iframe>
-        <iframe src="https://www.coolmathgames.com/0-zombie" title="Zombie Escape"></iframe>
-        <iframe src="https://www.coolmathgames.com/0-snowball-throw" title="Snowball Throw"></iframe>
-        <iframe src="https://www.coolmathgames.com/0-road-cross" title="Road Cross"></iframe>
-        <iframe src="https://www.coolmathgames.com/0-fling" title="Fling"></iframe>
-        <iframe src="https://www.coolmathgames.com/0-golf" title="Golf"></iframe>
-        <iframe src="https://www.coolmathgames.com/0-air-hockey" title="Air Hockey"></iframe>
-        <iframe src="https://www.coolmathgames.com/0-tower" title="Tower Defense"></iframe>
-        <iframe src="https://www.coolmathgames.com/0-maze" title="Maze Escape"></iframe>
-        <iframe src="https://www.coolmathgames.com/0-kongregate" title="Kongregate"></iframe>
-        <!-- Repeat this structure to add more games (up to 100) -->
+    <main>
+      <h1>Welcome to ASDF Gams</h1>
+      <div id="game-buttons">
+        <button onclick="loadGame(1)">Flappy Bird</button>
+        <button onclick="loadGame(2)">Tetris</button>
+        <button onclick="loadGame(3)">Pac-Man</button>
+        <button onclick="loadGame(4)">Snake</button>
+        <button onclick="loadGame(5)">2048</button>
+        <button onclick="loadGame(6)">Asteroids</button>
+        <button onclick="loadGame(7)">Pong</button>
+        <button onclick="loadGame(8)">Space Invaders</button>
+        <button onclick="loadGame(9)">Breakout</button>
+        <button onclick="loadGame(10)">Flappy Bird 2</button>
+        <button onclick="loadGame(11)">Bubble Shooter</button>
+        <button onclick="loadGame(12)">Frogger</button>
+        <button onclick="loadGame(13)">Chess</button>
+        <button onclick="loadGame(14)">Sudoku</button>
+        <button onclick="loadGame(15)">Whack-A-Mole</button>
+        <button onclick="loadGame(16)">Hangman</button>
+        <button onclick="loadGame(17)">Memory Game</button>
+        <button onclick="loadGame(18)">Bejeweled</button>
+        <button onclick="loadGame(19)">Minesweeper</button>
+        <button onclick="loadGame(20)">Simon Game</button>
+        <button onclick="loadGame(21)">Doodle Jump</button>
+        <button onclick="loadGame(22)">Bubble Bobble</button>
+        <button onclick="loadGame(23)">Mappy</button>
+        <button onclick="loadGame(24)">Donkey Kong</button>
+        <button onclick="loadGame(25)">Galaga</button>
+        <button onclick="loadGame(26)">Q*Bert</button>
+        <button onclick="loadGame(27)">King of Fighters</button>
+        <button onclick="loadGame(28)">Zuma</button>
+        <button onclick="loadGame(29)">Guitar Hero</button>
+        <button onclick="loadGame(30)">Mario Kart</button>
       </div>
-    </section>
-
-    <!-- Settings Section -->
-    <section id="settings">
-      <h2>Choose Your Theme</h2>
-      <select id="theme-select">
-        <option value="default">Default (Purple)</option>
-        <option value="aurora">Aurora Blue</option>
-        <option value="emerald">Emerald Green</option>
-        <option value="midnight">Midnight Grey</option>
-        <option value="ocean">Ocean Light Blue</option>
-        <option value="sakura">Sakura Pink</option>
-        <option value="supernova">Supernova Red</option>
-      </select>
-
-      <h2>Panic Key</h2>
-      <label for="panic-key">Set Panic Key (e.g., "Esc"):</label>
-      <input type="text" id="panic-key" placeholder="Set Panic Key" />
-
-      <h2>Cloak Feature</h2>
-      <button onclick="window.location.href = 'about:blank'">Activate Cloak</button>
-    </section>
-
-    <!-- Pr*xies Section -->
-    <section id="prx" class="proxy-section">
-      <h2>Browse Anonymously</h2>
-      <iframe src="https://your-heroku-app.herokuapp.com"></iframe>
-      <button onclick="window.location.href = 'about:blank'">Activate Cloak (Go to about:blank)</button>
-    </section>
-  </main>
-
-  <!-- Footer -->
-  <footer>
-    <p>© 2025 ASDF Gams</p>
-  </footer>
+      <button id="random-game-btn" onclick="loadRandomGame()">Load Random Game</button>
+      <div id="game-container">
+        <iframe id="game-frame" src="" frameborder="0"></iframe>
+      </div>
+      <div id="controls">
+        <button onclick="toggleControls()">Show Controls</button>
+        <div id="volume">
+          Volume: <input type="range" id="volume-range" min="0" max="100" />
+        </div>
+      </div>
+    </main>
+  </div>
 
   <script>
-    // Handle theme change
-    document.getElementById('theme-select').addEventListener('change', function() {
-      document.body.className = this.value;
-    });
+    function loadGame(gameId) {
+      const games = [
+        "https://flappybird.io/",
+        "https://tetris.com/",
+        "https://www.pacman.com",
+        "https://playsnake.org/",
+        "https://2048game.com/",
+        "https://www.asteroids.com",
+        "https://www.ponggame.org",
+        "https://www.spaceinvaders.com",
+        "https://www.breakoutgame.com",
+        "https://flappybird2.io",
+        "https://bubbleshooter.com",
+        "https://www.froggergame.com",
+        "https://chess.com",
+        "https://www.sudoku.com",
+        "https://www.whack-a-mole.com",
+        "https://www.hangman.com",
+        "https://memorygame.com",
+        "https://www.bejeweled.com",
+        "https://www.minesweeper.com",
+        "https://www.simon.com",
+        "https://www.doodlejump.com",
+        "https://www.bubblebobble.com",
+        "https://www.mappygame.com",
+        "https://www.donkeykong.com",
+        "https://www.galaga.com",
+        "https://www.qbert.com",
+        "https://www.kingoffighters.com",
+        "https://www.zumagame.com",
+        "https://www.guitarhero.com",
+        "https://www.mariokart.com"
+      ];
+      const iframe = document.getElementById("game-frame");
+      iframe.src = games[gameId - 1];
+    }
 
-    // Handle panic key (basic functionality)
-    document.getElementById('panic-key').addEventListener('input', function(event) {
-      const panicKey = event.target.value.toLowerCase();
+    function loadRandomGame() {
+      const randomId = Math.floor(Math.random() * 30) + 1;
+      loadGame(randomId);
+    }
 
-      window.addEventListener('keydown', function(e) {
-        if (e.key.toLowerCase() === panicKey) {
-          window.close();
-        }
-      });
-    });
+    function toggleControls() {
+      const controls = document.getElementById("controls");
+      controls.style.display = controls.style.display === "none" ? "block" : "none";
+    }
   </script>
 </body>
 </html>
