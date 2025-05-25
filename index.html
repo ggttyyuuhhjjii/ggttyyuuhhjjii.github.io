@@ -11,24 +11,42 @@
     }
 
     body, html {
-      margin: 0; padding: 0;
+      margin: 0;
+      padding: 0;
       height: 100%;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    /* Default Theme Styles */
+    .default-theme {
       background-color: #000;
       color: #00ff00;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .default-theme nav a {
+      color: #00ff00;
+      border: 2px solid #a020f0;
+    }
+
+    .default-theme .controls {
+      background-color: #222;
+      color: #fff;
+    }
+
+    .default-theme .game-buttons a:hover {
+      background-color: #a020f0;
+      color: #fff;
     }
 
     /* Layout */
     .container {
       display: flex;
-      height: 100vh;
       flex-direction: column;
+      height: 100vh;
     }
 
-    /* Sidebar nav on left */
     nav {
       width: 180px;
-      background-color: #111;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -37,110 +55,29 @@
     }
 
     nav a {
-      color: #00ff00;
       text-decoration: none;
       margin: 1em 0;
       width: 140px;
-      border: 2px solid #a020f0;
-      border-radius: 10px; /* rounded square */
       padding: 10px 8px;
+      font-weight: bold;
+      font-size: 1em;
+      border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-weight: bold;
-      font-size: 1em;
+      box-shadow: 0 2px 6px rgba(160, 32, 240, 0.5);
       transition: background-color 0.3s ease, color 0.3s ease;
-      user-select: none;
-      box-shadow: 0 2px 6px rgba(160, 32, 240, 0.5);
-      cursor: pointer;
     }
 
-    nav a:hover,
-    nav a.active {
+    nav a:hover {
       background-color: #a020f0;
       color: #fff;
-      box-shadow: 0 4px 14px rgba(160, 32, 240, 0.9);
     }
 
-    /* Icons */
-    nav a svg {
-      fill: #00ff00;
-      margin-right: 8px;
-      width: 20px;
-      height: 20px;
-      transition: fill 0.3s ease;
-    }
-
-    nav a:hover svg,
-    nav a.active svg {
-      fill: #fff;
-    }
-
-    /* Main content area */
-    main {
-      flex-grow: 1;
-      padding: 2em;
-      overflow-y: auto;
-      position: relative;
-    }
-
-    /* Page headings */
-    h1 {
-      margin-top: 0;
-      margin-bottom: 1em;
-      color: #a020f0;
-    }
-
-    /* Game buttons container */
-    .game-buttons {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 1em 1.5em;
-    }
-
-    .game-buttons a {
-      background-color: #111;
-      color: #00ff00;
-      border: 2px solid #a020f0;
-      border-radius: 10px; /* rounded square */
-      padding: 12px 16px;
-      font-weight: bold;
-      font-size: 1em;
-      text-decoration: none;
-      display: block;
-      text-align: center;
-      box-shadow: 0 2px 6px rgba(160, 32, 240, 0.5);
-      transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
-      user-select: none;
-    }
-
-    .game-buttons a:hover {
-      background-color: #a020f0;
-      color: #fff;
-      box-shadow: 0 4px 14px rgba(160, 32, 240, 0.9);
-    }
-
-    /* Dot effect */
-    .dot {
-      position: absolute;
-      width: 15px;
-      height: 15px;
-      border-radius: 50%;
-      background-color: #a020f0;
-      pointer-events: none;
-      animation: fadeOutDot 2s forwards;
-      z-index: 1000;
-    }
-
-    @keyframes fadeOutDot {
-      0% {opacity: 1; transform: scale(1);}
-      100% {opacity: 0; transform: scale(2);}
-    }
-
-    /* Controls section */
     .controls {
       display: flex;
-      justify-content: space-between;
+      flex-direction: column;
+      justify-content: center;
       padding: 1em 2em;
       background-color: #222;
       color: #fff;
@@ -148,18 +85,21 @@
 
     .controls label {
       font-size: 1.1em;
-    }
-
-    .fullscreen-btn, .volume-slider {
-      cursor: pointer;
-      margin: 0 10px;
+      margin-bottom: 0.5em;
     }
 
     .volume-slider {
       width: 150px;
     }
 
-    /* Embedded games */
+    .fullscreen-btn {
+      cursor: pointer;
+    }
+
+    .theme-select {
+      margin-top: 1em;
+    }
+
     .embedded-games {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -173,9 +113,32 @@
       width: 100%;
       height: 300px;
     }
+
+    /* Custom Section for Cloaking and Panic Key */
+    .cloaking-section {
+      margin-top: 2em;
+      background-color: #333;
+      color: #fff;
+      padding: 1em;
+      border-radius: 10px;
+    }
+
+    .cloaking-section label {
+      font-size: 1.1em;
+    }
+
+    .cloaking-section select,
+    .cloaking-section input {
+      margin-top: 0.5em;
+      padding: 0.5em;
+      font-size: 1em;
+      border-radius: 5px;
+      border: 1px solid #fff;
+      color: #000;
+    }
   </style>
 </head>
-<body>
+<body class="default-theme">
 
 <div class="container">
   <!-- Controls Section -->
@@ -185,22 +148,44 @@
       <input type="range" id="volume" class="volume-slider" min="0" max="1" step="0.01" value="0.5">
     </div>
     <button class="fullscreen-btn" id="fullscreen-btn">Fullscreen</button>
+    <div class="theme-select">
+      <label for="theme">Select Theme:</label>
+      <select id="theme">
+        <option value="default-theme">Default</option>
+        <option value="aurora-theme">Aurora</option>
+        <option value="emerald-theme">Emerald</option>
+        <option value="midnight-theme">Midnight</option>
+        <option value="ocean-theme">Ocean</option>
+        <option value="sakura-theme">Sakura</option>
+        <option value="supernova-theme">Supernova</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Cloaking Section -->
+  <div class="cloaking-section">
+    <h2>Cloaking Settings</h2>
+    <label for="cloaking-method">Cloaking Method:</label>
+    <select id="cloaking-method">
+      <option value="about-blank">About:Blank</option>
+      <option value="blob-cloaking">Blob Cloaking</option>
+    </select>
+
+    <label for="auto-cloak">Automatic Cloaking:</label>
+    <input type="checkbox" id="auto-cloak">
+
+    <label for="tab-cloaking">Tab Cloaking:</label>
+    <input type="checkbox" id="tab-cloaking">
+
+    <label for="panic-key">Panic Key:</label>
+    <input type="text" id="panic-key" placeholder="Enter keybind(s) (e.g., F12, Alt+P)">
   </div>
 
   <!-- Sidebar nav on left -->
   <nav>
-    <a href="#" id="nav-home" class="active" data-page="home">
-      <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-      Home
-    </a>
-    <a href="#" id="nav-gams" data-page="gams">
-      <svg viewBox="0 0 24 24"><path d="M7 17H4V7h3v10zm9 0h-3V7h3v10zM5 5h14v2H5V5z"/></svg>
-      Games
-    </a>
-    <a href="#" id="nav-about" data-page="about">
-      <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-      About
-    </a>
+    <a href="#" id="nav-home" class="active" data-page="home">Home</a>
+    <a href="#" id="nav-gams" data-page="gams">Games</a>
+    <a href="#" id="nav-about" data-page="about">About</a>
   </nav>
 
   <main>
@@ -212,7 +197,7 @@
     <section id="page-gams" style="display:none;">
       <h1>Games</h1>
       <div class="embedded-games">
-        <!-- Simple Embedded Games -->
+        <!-- Embedded Simple Games -->
         <iframe src="https://www.coolmathgames.com/0-jumping-bird" title="Jumping Bird Game"></iframe>
         <iframe src="https://www.coolmathgames.com/0-2048" title="2048 Game"></iframe>
         <iframe src="https://www.coolmathgames.com/0-freecell" title="Freecell Solitaire"></iframe>
@@ -225,49 +210,54 @@
     <section id="page-about" style="display:none;">
       <h1>About</h1>
       <p>This site is a sleek, black-and-green themed collection of fun games with a purple highlight. Enjoy!</p>
+      <p>Join our <a href="https://discord.com" target="_blank">Discord</a> for theme submissions and suggestions!</p>
     </section>
   </main>
 </div>
 
 <script>
-  const pages = ['home', 'gams', 'about'];
-
-  function showPage(page) {
-    pages.forEach(p => {
-      document.getElementById('page-' + p).style.display = (p === page) ? 'block' : 'none';
-      document.getElementById('nav-' + p).classList.toggle('active', p === page);
-    });
-  }
-
-  // Attach click handlers for nav links:
-  document.querySelectorAll('nav a').forEach(link => {
-    link.addEventListener('click', e => {
-      e.preventDefault();
-      const page = link.getAttribute('data-page');
-      showPage(page);
-    });
+  // Apply theme on change
+  document.getElementById('theme').addEventListener('change', function() {
+    document.body.classList.remove(...document.body.classList);
+    document.body.classList.add(this.value);
   });
 
-  // Volume slider functionality
-  const volumeSlider = document.getElementById('volume');
-  volumeSlider.addEventListener('input', (e) => {
-    // Example: Adjust the volume of an audio element (or any other use)
-    const volume = e.target.value;
-    console.log("Volume set to:", volume);  // Just logs to the console for now
-  });
-
-  // Fullscreen button functionality
-  const fullscreenBtn = document.getElementById('fullscreen-btn');
-  fullscreenBtn.addEventListener('click', () => {
-    if (document.documentElement.requestFullscreen) {
-      document.documentElement.requestFullscreen();
-    } else if (document.documentElement.mozRequestFullScreen) { // Firefox
-      document.documentElement.mozRequestFullScreen();
-    } else if (document.documentElement.webkitRequestFullscreen) { // Chrome, Safari and Opera
-      document.documentElement.webkitRequestFullscreen();
-    } else if (document.documentElement.msRequestFullscreen) { // IE/Edge
-      document.documentElement.msRequestFullscreen();
+  // Cloaking method handler
+  document.getElementById('cloaking-method').addEventListener('change', function() {
+    const cloakingMethod = this.value;
+    if (cloakingMethod === "about-blank") {
+      window.location.href = "about:blank";
+    } else if (cloakingMethod === "blob-cloaking") {
+      let blob = new Blob([''], { type: 'text/html' });
+      let url = URL.createObjectURL(blob);
+      window.location.href = url;
     }
+  });
+
+  // Auto cloaking toggle
+  document.getElementById('auto-cloak').addEventListener('change', function() {
+    if (this.checked) {
+      document.body.style.visibility = "hidden";
+      setTimeout(() => { document.body.style.visibility = "visible"; }, 1000);
+    }
+  });
+
+  // Tab cloaking
+  document.getElementById('tab-cloaking').addEventListener('change', function() {
+    if (this.checked) {
+      document.title = "Untitled Tab";
+      document.querySelector("link[rel='icon']").href = "data:image/png;base64,";
+    }
+  });
+
+  // Panic Key functionality
+  document.getElementById('panic-key').addEventListener('change', function() {
+    const panicKey = this.value;
+    window.addEventListener('keydown', function(e) {
+      if (panicKey.includes(e.key)) {
+        window.location.href = "https://example.com";  // Change to your panic site
+      }
+    });
   });
 </script>
 
