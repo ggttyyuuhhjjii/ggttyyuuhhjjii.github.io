@@ -5,280 +5,241 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ASDF Gams</title>
   <style>
+    /* General Styles */
     body {
+      font-family: Arial, sans-serif;
       background-color: black;
       color: #00FF00;
-      font-family: Arial, sans-serif;
+      margin: 0;
     }
-    h1, h2 {
+
+    header {
+      background-color: #333;
+      padding: 10px;
+    }
+
+    header .logo h1 {
+      color: #8A2BE2;
+      text-align: center;
+    }
+
+    nav ul {
+      list-style: none;
+      text-align: center;
+      padding: 0;
+    }
+
+    nav ul li {
+      display: inline;
+      margin: 0 15px;
+    }
+
+    nav ul li a {
+      color: #fff;
+      text-decoration: none;
+    }
+
+    main {
+      padding: 20px;
+    }
+
+    h2 {
       color: #8A2BE2;
     }
-    .button {
+
+    .game-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .game-button, .random-game-button {
       background-color: #8A2BE2;
       color: white;
-      border: none;
-      padding: 10px 20px;
+      padding: 15px 30px;
       margin: 10px;
+      border: none;
       cursor: pointer;
       border-radius: 12px;
       font-size: 16px;
     }
-    .button:hover {
-      background-color: #7a1fa2;
+
+    .game-button:hover, .random-game-button:hover {
+      background-color: #7A1BB6;
     }
-    .game-container {
-      margin: 20px;
-    }
-    iframe {
-      width: 100%;
-      height: 500px;
-    }
-    #controls {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 20px;
-    }
-    #game-buttons {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 15px;
-      justify-content: center;
-      margin-top: 20px;
-    }
+
     button {
-      background-color: #8A2BE2;
-      color: white;
-      border: none;
-      padding: 10px 15px;
+      padding: 10px;
+      border-radius: 10px;
       cursor: pointer;
-      border-radius: 12px;
-      font-size: 14px;
     }
+
     button:hover {
-      background-color: #7a1fa2;
+      background-color: #7A1BB6;
     }
-    .dot {
-      position: absolute;
-      background-color: #00FF00;
-      border-radius: 50%;
-      animation: fadeOut 1s forwards;
-    }
-    @keyframes fadeOut {
-      to {
-        opacity: 0;
-        transform: scale(2);
-      }
-    }
-    .settings-container {
+
+    footer {
+      text-align: center;
       margin-top: 20px;
+      color: white;
       padding: 10px;
     }
+
+    /* Proxy Page Styles */
+    .proxy-section {
+      text-align: center;
+      margin: 20px;
+    }
+
+    iframe {
+      width: 100%;
+      height: 600px;
+      border: none;
+    }
+
+    .starry-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('https://cdn.pixabay.com/photo/2017/08/30/10/59/space-2695564_960_720.jpg') no-repeat center center;
+      background-size: cover;
+      animation: stars 60s infinite linear;
+    }
+
+    @keyframes stars {
+      0% { background-position: 0 0; }
+      100% { background-position: 1000px 1000px; }
+    }
+
     #cloak-btn {
       background-color: #FF6347;
       color: white;
       padding: 10px;
       border-radius: 12px;
       cursor: pointer;
+      margin-top: 10px;
     }
+
     #cloak-btn:hover {
       background-color: #e05c3c;
     }
-    .theme-button {
+
+    /* Settings Page Styles */
+    select, input {
       padding: 10px;
-      margin: 5px;
-      border-radius: 8px;
-      cursor: pointer;
+      margin: 10px;
+      font-size: 16px;
+      border-radius: 10px;
     }
-    .theme-button.active {
-      border: 2px solid #fff;
+
+    #theme-select {
+      width: 200px;
     }
   </style>
 </head>
 <body>
+
+  <!-- Header -->
   <header>
-    <h1>Welcome to ASDF Gams!</h1>
+    <div class="logo">
+      <h1>ASDF Gams</h1>
+    </div>
     <nav>
-      <button class="button" id="home-btn">Home</button>
-      <button class="button" id="gams-btn">Gams</button>
-      <button class="button" id="settings-btn">Settings</button>
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#gams">Gams</a></li>
+        <li><a href="#settings">Settings</a></li>
+        <li><a href="#prx">Pr*xies</a></li>
+      </ul>
     </nav>
   </header>
 
+  <!-- Main Content -->
   <main>
-    <!-- Gams Page -->
-    <div id="gams-page">
-      <h2>Select a Game</h2>
-      <div id="game-buttons"></div>
-      <div id="game-container" class="game-container">
-        <p>Select a game above to play it here.</p>
-      </div>
-      <div id="controls" style="display: none;">
-        <button id="back-to-gams">Back to Gams</button>
-        <button id="fullscreen-btn">Full Screen</button>
-      </div>
-      <button id="random-game-btn" class="button">Random Game</button>
-    </div>
+    <!-- Home Section -->
+    <section id="home">
+      <h2>Welcome to ASDF Gams!</h2>
+      <p>Explore and play a variety of games!</p>
+    </section>
 
-    <!-- Settings Page -->
-    <div id="settings-page" style="display: none;">
-      <h2>Settings</h2>
-      <div class="settings-container">
-        <h3>Theme Colors</h3>
-        <button class="theme-button" data-color="purple">Default Purple</button>
-        <button class="theme-button" data-color="blue">Aurora Blue</button>
-        <button class="theme-button" data-color="green">Emerald Green</button>
-        <button class="theme-button" data-color="gray">Midnight Grey</button>
-        <button class="theme-button" data-color="lightblue">Ocean Light Blue</button>
-        <button class="theme-button" data-color="pink">Sakura Pink</button>
-        <button class="theme-button" data-color="red">Supernova Red</button>
+    <!-- Gams Section -->
+    <section id="gams">
+      <h2>Play Some Games!</h2>
+      <div class="game-buttons">
+        <button class="game-button" onclick="window.location.href = 'https://example.com/1v1lol'">1v1.LOL</button>
+        <button class="game-button" onclick="window.location.href = 'https://example.com/8ballpool'">8 Ball Pool</button>
+        <button class="game-button" onclick="window.location.href = 'https://example.com/2048'">2048</button>
+        <!-- Add more game buttons here... -->
       </div>
-      <div class="settings-container">
-        <h3>Panic Key</h3>
-        <input type="text" id="panic-key-input" placeholder="Set Panic Key" />
-      </div>
-      <div class="settings-container">
-        <h3>Cloak</h3>
-        <button id="cloak-btn">Activate Cloak</button>
-      </div>
-    </div>
+      <button class="random-game-button" onclick="openRandomGame()">Random Game</button>
+    </section>
+
+    <!-- Settings Section -->
+    <section id="settings">
+      <h2>Choose Your Theme</h2>
+      <select id="theme-select">
+        <option value="default">Default (Purple)</option>
+        <option value="aurora">Aurora Blue</option>
+        <option value="emerald">Emerald Green</option>
+        <option value="midnight">Midnight Grey</option>
+        <option value="ocean">Ocean Light Blue</option>
+        <option value="sakura">Sakura Pink</option>
+        <option value="supernova">Supernova Red</option>
+      </select>
+
+      <h2>Panic Key</h2>
+      <label for="panic-key">Set Panic Key (e.g., "Esc"):</label>
+      <input type="text" id="panic-key" placeholder="Set Panic Key" />
+
+      <h2>Cloak Feature</h2>
+      <button onclick="window.location.href = 'about:blank'">Activate Cloak</button>
+    </section>
+
+    <!-- Pr*xies Section -->
+    <section id="prx" class="proxy-section">
+      <h2>Browse Anonymously</h2>
+      <iframe src="https://your-heroku-app.herokuapp.com"></iframe>
+      <button id="cloak-btn" onclick="window.location.href = 'about:blank'">Activate Cloak (Go to about:blank)</button>
+    </section>
   </main>
 
+  <!-- Footer -->
   <footer>
-    <p>&copy; 2025 ASDF Gams - Enjoy your games!</p>
+    <p>© 2025 ASDF Gams</p>
   </footer>
 
   <script>
-    const pages = ['home', 'gams', 'settings'];
-    let currentPage = 'home';
+    // Handle theme change
+    document.getElementById('theme-select').addEventListener('change', function() {
+      document.body.className = this.value;
+    });
 
-    // Elements references
-    const gameButtonsContainer = document.getElementById('game-buttons');
-    const gameContainer = document.getElementById('game-container');
-    const backBtn = document.getElementById('back-to-gams');
-    const fullscreenBtn = document.getElementById('fullscreen-btn');
-    const randomGameBtn = document.getElementById('random-game-btn');
-    const cloakBtn = document.getElementById('cloak-btn');
-    const panicKeyInput = document.getElementById('panic-key-input');
-    const themeButtons = document.querySelectorAll('.theme-button');
-    const settingsBtn = document.getElementById('settings-btn');
-    const gamsBtn = document.getElementById('gams-btn');
-    const homeBtn = document.getElementById('home-btn');
+    // Handle panic key (basic functionality)
+    document.getElementById('panic-key').addEventListener('input', function(event) {
+      const panicKey = event.target.value.toLowerCase();
 
-    // Game data array
+      window.addEventListener('keydown', function(e) {
+        if (e.key.toLowerCase() === panicKey) {
+          window.close();
+        }
+      });
+    });
+
+    // Random game button
     const games = [
-      { name: "2048", embed: "https://play2048.co/" },
-      { name: "Tetris", embed: "https://tetris.com/play-tetris" },
-      { name: "PacMan", embed: "https://www.retrogames.cc/embed/43536-pacman.html" },
-      { name: "Breakout", embed: "https://www.retrogames.cc/embed/50489-breakout.html" },
-      { name: "Bubble Shooter", embed: "https://bubbleshooter.net/" }
+      'https://example.com/1v1lol',
+      'https://example.com/8ballpool',
+      'https://example.com/2048',
+      // Add more game URLs here...
     ];
 
-    let currentIframe = null;
-
-    // Switch pages
-    function switchPage(page) {
-      currentPage = page;
-      pages.forEach(p => document.getElementById(`${p}-page`).style.display = p === page ? 'block' : 'none');
+    function openRandomGame() {
+      const randomIndex = Math.floor(Math.random() * games.length);
+      window.location.href = games[randomIndex];
     }
-
-    // Load game in iframe
-    function loadGame(idx) {
-      const game = games[idx];
-      gameContainer.innerHTML = '';
-      const iframe = document.createElement('iframe');
-      iframe.src = game.embed;
-      iframe.allowFullscreen = true;
-      iframe.style.width = '100%';
-      iframe.style.height = '500px';
-      gameContainer.appendChild(iframe);
-      currentIframe = iframe;
-
-      backBtn.style.display = 'inline-block';
-      fullscreenBtn.style.display = 'inline-block';
-    }
-
-    // Populate game buttons
-    function createGameButtons() {
-      gameButtonsContainer.innerHTML = '';
-      games.forEach((game, idx) => {
-        const btn = document.createElement('button');
-        btn.textContent = game.name;
-        btn.addEventListener('click', () => loadGame(idx));
-        gameButtonsContainer.appendChild(btn);
-      });
-    }
-
-    // Fullscreen
-    fullscreenBtn.addEventListener('click', () => {
-      if (!document.fullscreenElement) {
-        gameContainer.requestFullscreen().catch(console.log);
-      } else {
-        document.exitFullscreen();
-      }
-    });
-
-    // Back button
-    backBtn.addEventListener('click', () => {
-      gameContainer.innerHTML = `<p>Select a game above to play it here.</p>`;
-      backBtn.style.display = 'none';
-      fullscreenBtn.style.display = 'none';
-    });
-
-    // Random Game button
-    randomGameBtn.addEventListener('click', () => {
-      const randIdx = Math.floor(Math.random() * games.length);
-      loadGame(randIdx);
-    });
-
-    // Theme color selection
-    themeButtons.forEach(btn => {
-      btn.addEventListener('click', () => {
-        const color = btn.getAttribute('data-color');
-        document.documentElement.style.setProperty('--highlight-color', color);
-        themeButtons.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-      });
-    });
-
-    // Panic Key setup
-    let panicKey = localStorage.getItem('panicKey') || '';
-    panicKeyInput.value = panicKey.toUpperCase();
-    panicKeyInput.addEventListener('keydown', e => {
-      e.preventDefault();
-      if (e.key === "Escape") {
-        panicKey = '';
-        panicKeyInput.value = '';
-        localStorage.removeItem('panicKey');
-      } else if (e.key.length === 1) {
-        panicKey = e.key.toUpperCase();
-        panicKeyInput.value = panicKey;
-        localStorage.setItem('panicKey', panicKey);
-      }
-    });
-
-    window.addEventListener('keydown', e => {
-      if (panicKey && e.key.toUpperCase() === panicKey) {
-        window.location.replace('about:blank');  // Panic button closes the tab
-      }
-    });
-
-    // Cloak button to blank page
-    cloakBtn.addEventListener('click', () => {
-      window.location.replace('about:blank');
-    });
-
-    // Switch to settings page
-    settingsBtn.addEventListener('click', () => switchPage('settings'));
-
-    // Switch to games page
-    gamsBtn.addEventListener('click', () => switchPage('gams'));
-
-    // Switch to home page
-    homeBtn.addEventListener('click', () => switchPage('home'));
-
-    // Initial setup
-    switchPage('home');
-    createGameButtons();
   </script>
+
 </body>
 </html>
