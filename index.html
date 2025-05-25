@@ -1,259 +1,257 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>ASDF Gams</title>
-  <style>
-    :root {
-      --bg-color: #000;
-      --text-color: #0f0;
-      --highlight-color: #a020f0; /* Default purple */
-    }
-    body {
-      margin: 0; padding: 0;
-      background-color: var(--bg-color);
-      color: var(--text-color);
-      font-family: Arial, sans-serif;
-    }
-    #container {
-      display: flex;
-      height: 100vh;
-    }
-    nav {
-      width: 160px;
-      background: #111;
-      border-right: 2px solid var(--highlight-color);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding-top: 20px;
-      box-sizing: border-box;
-    }
-    nav a {
-      color: var(--text-color);
-      text-decoration: none;
-      margin: 10px 0;
-      padding: 10px 20px;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-weight: bold;
-      width: 120px;
-      justify-content: center;
-      transition: background-color 0.3s ease;
-    }
-    nav a.active, nav a:hover {
-      background-color: var(--highlight-color);
-      color: #000;
-    }
-    nav a svg {
-      fill: currentColor;
-      width: 18px;
-      height: 18px;
-    }
-    main {
-      flex-grow: 1;
-      padding: 20px;
-      overflow-y: auto;
-    }
-    h1 {
-      margin-top: 0;
-    }
-    #game-buttons {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 12px;
-      margin-bottom: 20px;
-    }
-    #game-buttons button {
-      background-color: #111;
-      border: 2px solid var(--highlight-color);
-      border-radius: 15px;
-      color: var(--text-color);
-      font-weight: bold;
-      padding: 12px;
-      cursor: pointer;
-      user-select: none;
-      transition: background-color 0.3s ease;
-    }
-    #game-buttons button:hover {
-      background-color: var(--highlight-color);
-      color: #000;
-      box-shadow: 0 0 10px var(--highlight-color);
-    }
-    #random-game-btn {
-      grid-column: span 5;
-      background-color: var(--highlight-color);
-      color: #000;
-      font-weight: bold;
-      font-size: 1.1em;
-      border-radius: 15px;
-      cursor: pointer;
-      box-shadow: 0 4px 14px var(--highlight-color);
-      user-select: none;
-      border: none;
-      margin-bottom: 20px;
-      padding: 15px 0;
-    }
-    #random-game-btn:hover {
-      background-color: #8b00d9;
-      box-shadow: 0 0 18px #8b00d9;
-    }
-    #game-container {
-      width: 100%;
-      height: 600px;
-      background: #111;
-      border: 2px solid var(--highlight-color);
-      border-radius: 15px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    #game-container iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
-      border-radius: 15px;
-    }
-    #controls {
-      margin-top: 15px;
-      display: none;
-      gap: 15px;
-      align-items: center;
-    }
-    #controls button, #controls input[type=range] {
-      cursor: pointer;
-    }
-    #controls button {
-      background-color: var(--highlight-color);
-      border: none;
-      color: #000;
-      padding: 8px 15px;
-      border-radius: 10px;
-      font-weight: bold;
-      user-select: none;
-    }
-    #controls button:hover {
-      background-color: #8b00d9;
-      box-shadow: 0 0 10px #8b00d9;
-    }
-    #volume-range {
-      width: 120px;
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ASDF Gams</title>
+<style>
+  /* Reset */
+  * {
+    box-sizing: border-box;
+  }
+
+  body, html {
+    margin: 0; padding: 0;
+    height: 100%;
+    background-color: #000;
+    color: #00ff00;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  /* Layout */
+  .container {
+    display: flex;
+    height: 100vh;
+  }
+
+  /* Sidebar nav on left */
+  nav {
+    width: 180px;
+    background-color: #111;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2em 0;
+    border-right: 2px solid #a020f0;
+  }
+
+  nav a {
+    color: #00ff00;
+    text-decoration: none;
+    margin: 1em 0;
+    width: 140px;
+    border: 2px solid #a020f0;
+    border-radius: 10px; /* rounded square */
+    padding: 10px 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1em;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    user-select: none;
+    box-shadow: 0 2px 6px rgba(160, 32, 240, 0.5);
+    cursor: pointer;
+  }
+  nav a:hover,
+  nav a.active {
+    background-color: #a020f0;
+    color: #fff;
+    box-shadow: 0 4px 14px rgba(160, 32, 240, 0.9);
+  }
+
+  /* Icons */
+  nav a svg {
+    fill: #00ff00;
+    margin-right: 8px;
+    width: 20px;
+    height: 20px;
+    transition: fill 0.3s ease;
+  }
+  nav a:hover svg,
+  nav a.active svg {
+    fill: #fff;
+  }
+
+  /* Main content area */
+  main {
+    flex-grow: 1;
+    padding: 2em;
+    overflow-y: auto;
+    position: relative;
+  }
+
+  /* Page headings */
+  h1 {
+    margin-top: 0;
+    margin-bottom: 1em;
+    color: #a020f0;
+  }
+
+  /* Game buttons container */
+  .game-buttons {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1em 1.5em;
+  }
+
+  .game-buttons a {
+    background-color: #111;
+    color: #00ff00;
+    border: 2px solid #a020f0;
+    border-radius: 10px; /* rounded square */
+    padding: 12px 16px;
+    font-weight: bold;
+    font-size: 1em;
+    text-decoration: none;
+    display: block;
+    text-align: center;
+    box-shadow: 0 2px 6px rgba(160, 32, 240, 0.5);
+    transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+    user-select: none;
+  }
+  .game-buttons a:hover {
+    background-color: #a020f0;
+    color: #fff;
+    box-shadow: 0 4px 14px rgba(160, 32, 240, 0.9);
+  }
+
+  /* Dot effect */
+  .dot {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background-color: #a020f0;
+    pointer-events: none;
+    animation: fadeOutDot 2s forwards;
+    z-index: 1000;
+  }
+
+  @keyframes fadeOutDot {
+    0% {opacity: 1; transform: scale(1);}
+    100% {opacity: 0; transform: scale(2);}
+  }
+</style>
 </head>
 <body>
-  <div id="container">
-    <nav>
-      <a href="#" id="nav-home" class="active" title="Home">
-        <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>Home
-      </a>
-      <a href="#" id="nav-gams" title="Gams">
-        <svg viewBox="0 0 24 24"><path d="M13 2H6a2 2 0 00-2 2v16a2 2 0 002 2h8a2 2 0 002-2V8l-5-6z"/></svg>Gams
-      </a>
-      <a href="#" id="nav-about" title="About">
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="none" fill="currentColor"/><path fill="#000" d="M11 10h2v6h-2zm1-4a1.25 1.25 0 100 2.5A1.25 1.25 0 0012 6z"/></svg>About
-      </a>
-      <a href="#" id="nav-settings" title="Settings">
-        <svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" d="M12 15.5a3.5 3.5 0 110-7 3.5 3.5 0 010 7z"/><path d="M19.43 12.98c.04-.31.07-.63.07-.98s-.03-.67-.07-.98l2.11-1.65a.5.5 0 00.12-.63l-2-3.46a.5.5 0 00-.6-.22l-2.49 1a7.01 7.01 0 00-1.63-.94l-.36-2.54a.5.5 0 00-.5-.42h-3.84a.5.5 0 00-.5.42l-.36 2.54a7.01 7.01 0 00-1.63.94l-2.49-1a.5.5 0 00-.6.22l-2 3.46a.5.5 0 00.12.63l2.11 1.65c-.05.31-.08.63-.08.98s.03.67.08.98l-2.11 1.65a.5.5 0 00-.12.63l2 3.46a.5.5 0 00.6.22l2.49-1c.49.37 1.04.7 1.63.94l.36 2.54a.5.5 0 00.5.42h3.84a.5.5 0 00.5-.42l.36-2.54c.59-.24 1.14-.57 1.63-.94l2.49 1a.5.5 0 00.6-.22l2-3.46a.5.5 0 00-.12-.63l-2.11-1.65zM12 14a2 2 0 110-4 2 2 0 010 4z"/></svg>Settings
-      </a>
-    </nav>
-    <main>
+
+<div class="container">
+  <nav>
+    <a href="#" id="nav-home" class="active" data-page="home">
+      <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+      Home
+    </a>
+    <a href="#" id="nav-gams" data-page="gams">
+      <svg viewBox="0 0 24 24"><path d="M7 17H4V7h3v10zm9 0h-3V7h3v10zM5 5h14v2H5V5z"/></svg>
+      Gams
+    </a>
+    <a href="#" id="nav-about" data-page="about">
+      <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+      About
+    </a>
+  </nav>
+
+  <main>
+    <section id="page-home">
       <h1>Welcome to ASDF Gams</h1>
-      <div id="game-buttons">
-        <button onclick="loadGame(1)">Flappy Bird</button>
-        <button onclick="loadGame(2)">Tetris</button>
-        <button onclick="loadGame(3)">Pac-Man</button>
-        <button onclick="loadGame(4)">Snake</button>
-        <button onclick="loadGame(5)">2048</button>
-        <button onclick="loadGame(6)">Asteroids</button>
-        <button onclick="loadGame(7)">Pong</button>
-        <button onclick="loadGame(8)">Space Invaders</button>
-        <button onclick="loadGame(9)">Breakout</button>
-        <button onclick="loadGame(10)">Flappy Bird 2</button>
-        <button onclick="loadGame(11)">Bubble Shooter</button>
-        <button onclick="loadGame(12)">Frogger</button>
-        <button onclick="loadGame(13)">Chess</button>
-        <button onclick="loadGame(14)">Sudoku</button>
-        <button onclick="loadGame(15)">Whack-A-Mole</button>
-        <button onclick="loadGame(16)">Hangman</button>
-        <button onclick="loadGame(17)">Memory Game</button>
-        <button onclick="loadGame(18)">Bejeweled</button>
-        <button onclick="loadGame(19)">Minesweeper</button>
-        <button onclick="loadGame(20)">Simon Game</button>
-        <button onclick="loadGame(21)">Doodle Jump</button>
-        <button onclick="loadGame(22)">Bubble Bobble</button>
-        <button onclick="loadGame(23)">Mappy</button>
-        <button onclick="loadGame(24)">Donkey Kong</button>
-        <button onclick="loadGame(25)">Galaga</button>
-        <button onclick="loadGame(26)">Q*Bert</button>
-        <button onclick="loadGame(27)">King of Fighters</button>
-        <button onclick="loadGame(28)">Zuma</button>
-        <button onclick="loadGame(29)">Guitar Hero</button>
-        <button onclick="loadGame(30)">Mario Kart</button>
-      </div>
-      <button id="random-game-btn" onclick="loadRandomGame()">Load Random Game</button>
-      <div id="game-container">
-        <iframe id="game-frame" src="" frameborder="0"></iframe>
-      </div>
-      <div id="controls">
-        <button onclick="toggleControls()">Show Controls</button>
-        <div id="volume">
-          Volume: <input type="range" id="volume-range" min="0" max="100" />
-        </div>
-      </div>
-    </main>
-  </div>
+      <p>This is your elegant black/green/purple themed site.</p>
+    </section>
 
-  <script>
-    function loadGame(gameId) {
-      const games = [
-        "https://flappybird.io/",
-        "https://tetris.com/",
-        "https://www.pacman.com",
-        "https://playsnake.org/",
-        "https://2048game.com/",
-        "https://www.asteroids.com",
-        "https://www.ponggame.org",
-        "https://www.spaceinvaders.com",
-        "https://www.breakoutgame.com",
-        "https://flappybird2.io",
-        "https://bubbleshooter.com",
-        "https://www.froggergame.com",
-        "https://chess.com",
-        "https://www.sudoku.com",
-        "https://www.whack-a-mole.com",
-        "https://www.hangman.com",
-        "https://memorygame.com",
-        "https://www.bejeweled.com",
-        "https://www.minesweeper.com",
-        "https://www.simon.com",
-        "https://www.doodlejump.com",
-        "https://www.bubblebobble.com",
-        "https://www.mappygame.com",
-        "https://www.donkeykong.com",
-        "https://www.galaga.com",
-        "https://www.qbert.com",
-        "https://www.kingoffighters.com",
-        "https://www.zumagame.com",
-        "https://www.guitarhero.com",
-        "https://www.mariokart.com"
-      ];
-      const iframe = document.getElementById("game-frame");
-      iframe.src = games[gameId - 1];
-    }
+    <section id="page-gams" style="display:none;">
+      <h1>Gams</h1>
+      <div class="game-buttons">
+        <a href="https://classicreload.com/breakout.html" target="_blank" rel="noopener noreferrer">Breakout</a>
+        <a href="https://angrybirdsnest.com/" target="_blank" rel="noopener noreferrer">Angry Birds</a>
+        <a href="https://www.google.com/search?q=play+pacman" target="_blank" rel="noopener noreferrer">PacMan</a>
+        <a href="https://tetris.com/play-tetris" target="_blank" rel="noopener noreferrer">Tetris</a>
+        <a href="https://bubble-shooter.com/" target="_blank" rel="noopener noreferrer">Bubble Shooter</a>
 
-    function loadRandomGame() {
-      const randomId = Math.floor(Math.random() * 30) + 1;
-      loadGame(randomId);
-    }
+        <a href="https://memory-improvement-tips.com/memory-game.html" target="_blank" rel="noopener noreferrer">Memory card game</a>
+        <a href="https://armorgames.com/orb-tower-game/b5b177de79d1aab4d7f4dbbb1ff8d90d" target="_blank" rel="noopener noreferrer">Orb Tower</a>
+        <a href="https://ponggame.org/" target="_blank" rel="noopener noreferrer">Pong</a>
+        <a href="https://play.rockpaperscissorslizardspock.com/" target="_blank" rel="noopener noreferrer">Rock, Paper, Scissors</a>
+        <a href="https://playsnake.org/" target="_blank" rel="noopener noreferrer">Snake</a>
 
-    function toggleControls() {
-      const controls = document.getElementById("controls");
-      controls.style.display = controls.style.display === "none" ? "block" : "none";
-    }
-  </script>
+        <a href="https://playtictactoe.org/" target="_blank" rel="noopener noreferrer">Tic-tac-toe</a>
+        <a href="https://games.cdn.famobi.com/html5games/10823/tilting-maze/v210/index.html" target="_blank" rel="noopener noreferrer">Tilting maze</a>
+        <a href="https://play2048.co/" target="_blank" rel="noopener noreferrer">2048</a>
+        <a href="https://blackjack21.net/3d-blackjack" target="_blank" rel="noopener noreferrer">3D blackjack</a>
+        <a href="https://www.miniclip.com/games/full-tilt-pinball/en/" target="_blank" rel="noopener noreferrer">Full Tilt! Pinball</a>
+
+        <a href="https://www.bejeweled.com/play" target="_blank" rel="noopener noreferrer">Bejeweled</a>
+        <a href="https://crossyroad.com/play" target="_blank" rel="noopener noreferrer">Crossy Road</a>
+        <a href="https://flappybird.io/" target="_blank" rel="noopener noreferrer">Flappy Bird</a>
+        <a href="https://www.crazygames.com/game/free-rider-hd" target="_blank" rel="noopener noreferrer">Free Rider HD</a>
+        <a href="https://geometry-wars-arcade.web.app/" target="_blank" rel="noopener noreferrer">Geometry Wars</a>
+
+        <a href="https://hexgl.bkcore.com/" target="_blank" rel="noopener noreferrer">HexGL</a>
+        <a href="https://www.solitairecardgames.com/klondike-solitaire" target="_blank" rel="noopener noreferrer">Klondike</a>
+        <a href="https://www.miniclip.com/games/match-arena/en/" target="_blank" rel="noopener noreferrer">Match Arena</a>
+        <a href="https://www.mathsisfun.com/games/guess-the-number-game.html" target="_blank" rel="noopener noreferrer">Number guessing game</a>
+        <a href="https://www.crazygames.com/game/1v1-lol" target="_blank" rel="noopener noreferrer">1v1.LOL</a>
+
+        <a href="https://www.miniclip.com/games/8-ball-pool-multiplayer/en/" target="_blank" rel="noopener noreferrer">8 Ball Pool</a>
+        <a href="https://www.heritagemahjong.com/" target="_blank" rel="noopener noreferrer">Heritage Mahjong Classic</a>
+        <a href="https://happysnakegame.com/" target="_blank" rel="noopener noreferrer">Happy Snakes</a>
+        <a href="https://mahjongcubemaster3d.com/" target="_blank" rel="noopener noreferrer">Mahjong Cube Master 3D</a>
+        <a href="https://www.mathsisfun.com/games/checkers.html" target="_blank" rel="noopener noreferrer">Checkers</a>
+
+        <a href="https://jigsort.com/" target="_blank" rel="noopener noreferrer">Jigsort Puzzles</a>
+        <a href="https://paper-io.com/paper-io-2" target="_blank" rel="noopener noreferrer">Paper io 2</a>
+        <a href="https://aquapark.io/" target="_blank" rel="noopener noreferrer">Aquapark io</a>
+        <a href="https://www.crazygames.com/game/basketball-stars" target="_blank" rel="noopener noreferrer">Basketball Stars</a>
+        <a href="https://www.chess.com/play/computer" target="_blank" rel="noopener noreferrer">Chess</a>
+
+        <a href="https://www.mahjong.com/solitaire" target="_blank" rel="noopener noreferrer">Mahjong solitaire</a>
+        <a href="https://mergefruitt.com/" target="_blank" rel="noopener noreferrer">Merge Fruit</a>
+        <a href="https://sudoku.com/" target="_blank" rel="noopener noreferrer">Sudoku</a>
+        <a href="https://tinyfishing.io/" target="_blank" rel="noopener noreferrer">Tiny Fishing</a>
+        <a href="https://armorgames.com/play/age-of-war" target="_blank" rel="noopener noreferrer">Age of War</a>
+
+        <a href="https://amongus.to/" target="_blank" rel="noopener noreferrer">Among Us</a>
+        <a href="https://www.crazygames.com/game/bloxorz" target="_blank" rel="noopener noreferrer">Bloxorz</a>
+        <a href="https://www.crazygames.com/game/boxing" target="_blank" rel="noopener noreferrer">Boxing</a>
+        <a href="https://www.crazygames.com/game/color-match" target="_blank" rel="noopener noreferrer">Color match</a>
+      </div>
+    </section>
+
+    <section id="page-about" style="display:none;">
+      <h1>About</h1>
+      <p>This site is a sleek, black-and-green themed collection of fun games with a purple highlight. Enjoy!</p>
+    </section>
+  </main>
+</div>
+
+<script>
+  const pages = ['home', 'gams', 'about'];
+
+  function showPage(page) {
+    pages.forEach(p => {
+      document.getElementById('page-' + p).style.display = (p === page) ? 'block' : 'none';
+      document.getElementById('nav-' + p).classList.toggle('active', p === page);
+    });
+  }
+
+  // Attach click handlers for nav links:
+  document.querySelectorAll('nav a').forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      const page = link.getAttribute('data-page');
+      showPage(page);
+    });
+  });
+
+  // Dot effect on any click anywhere on main area
+  document.querySelector('main').addEventListener('click', e => {
+    const dot = document.createElement('div');
+    dot.classList.add('dot');
+    dot.style.left = (e.clientX) + 'px';
+    dot.style.top = (e.clientY) + 'px';
+    document.body.appendChild(dot);
+    setTimeout(() => dot.remove(), 2000);
+  });
+</script>
+
 </body>
 </html>
